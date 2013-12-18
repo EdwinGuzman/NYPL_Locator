@@ -13,7 +13,7 @@ function LibraryListController($scope, $http) {
     		message: lib.name
     	});
     });
-	}
+	};
 
 	angular.extend($scope, {
 		center: {
@@ -26,5 +26,15 @@ function LibraryListController($scope, $http) {
 		}
 	});
 
+	// jQuery.getJSON('http://afternoon-citadel-1782.herokuapp.com', {
+	// 	format: 'json'
+	// })
+	// 	.done(function(data) {
+	// 		console.log(data);
+	// 	});
+
+	$http.get('http://afternoon-citadel-1782.herokuapp.com').then(function(response) {
+		console.log(response);
+	});
 };
 
