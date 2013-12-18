@@ -1,0 +1,19 @@
+extends layout
+
+block head
+	// link(rel='stylesheet', href='vendor/bootstrap-css/css/bootstrap.css')
+	link(rel='stylesheet', href='http://cdn.leafletjs.com/leaflet-0.7/leaflet.css')
+	script(type='text/javascript', src='/javascripts/controller/LibraryListController.js')
+
+
+block content
+	div(ng-controller='LibraryListController', ng-init='setLibraries(#{JSON.stringify(libraries)})')
+		h1= title
+		p Welcome to #{title}
+
+		button(ng-click='showLeaflet()')
+
+		leaflet.leaflet(markers='markers',center='center',height='480px',width='640px')
+
+		ul
+			li.row.todo.not-done(ng-repeat='library in libraries') {{library.name}} {{library.lat}} {{library.lng}}

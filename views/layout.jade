@@ -1,0 +1,14 @@
+doctype 5
+html(ng-app='LibraryModule')
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript', src='http:///cdn.leafletjs.com/leaflet-0.7/leaflet.js')
+    script(type='text/javascript', src='/vendor/angular/angular.js')
+    script(type='text/javascript', src='/vendor/angular-leaflet-directive.min.js')
+    script(type='text/javascript', src='/javascripts/LibraryModule.js')
+
+    block head
+
+  body
+    block content
