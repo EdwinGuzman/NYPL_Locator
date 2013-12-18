@@ -8,11 +8,12 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
-var mongoose = require('mongoose');
-var db = mongoose.createConnection('localhost', 'libraryTest4')
+//var mongoose = require('mongoose');
+//var db = mongoose.createConnection('localhost', 'libraryTest4')
 
-var LibrarySchema = require('./models/Library.js').LibrarySchema;
-var Library = db.model('library', LibrarySchema);
+// var LibrarySchema = require('./models/Library.js').LibrarySchema;
+// var Library = db.model('library', LibrarySchema);
+var Library = [];
 
 var app = express();
 
@@ -32,9 +33,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index(Library));
+app.get('/', routes.index());
 app.get('/users', user.list);
-app.get('/libraries.json', routes.get(Library));
+//app.get('/libraries.json', routes.get(Library));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

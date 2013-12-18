@@ -33,8 +33,7 @@ function LibraryListController($scope, $http) {
 	// 		console.log(data);
 	// 	});
 
-	$http.get('http://afternoon-citadel-1782.herokuapp.com').then(function(response) {
-		console.log(response);
-	});
+	// $http.get('http://afternoon-citadel-1782.herokuapp.com').then(function(response) {
+	// });
 };
 
