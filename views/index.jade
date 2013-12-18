@@ -8,12 +8,13 @@ block head
 
 block content
 	div(ng-controller='LibraryListController', ng-init='setLibraries(#{JSON.stringify(libraries)})')
-		h1= title
-		p Welcome to #{title}
+		h1 NYPL Branch Locations
 
-		button(ng-click='showLeaflet()')
+		div.container
+			leaflet.leaflet(markers='markers',center='center',height='480px',width='640px')
 
-		leaflet.leaflet(markers='markers',center='center',height='480px',width='640px')
-
-		ul
-			li.row.todo.not-done(ng-repeat='library in libraries') {{library.name}} {{library.lat}} {{library.lng}}
+			div Search:
+				input(ng-model='searchLibrary')
+			ul
+				li.row.todo.not-done(ng-repeat='library in libraries | filter:searchLibrary') 
+					a(href='#',ng-click='gotoLibrary(library)') {{library.name}}

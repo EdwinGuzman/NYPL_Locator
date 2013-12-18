@@ -26,14 +26,25 @@ function LibraryListController($scope, $http) {
 		}
 	});
 
-	// jQuery.getJSON('http://afternoon-citadel-1782.herokuapp.com', {
-	// 	format: 'json'
-	// })
-	// 	.done(function(data) {
-	// 		console.log(data);
-	// 	});
+	$scope.gotoLibrary = function (library) {
 
-	// $http.get('http://afternoon-citadel-1782.herokuapp.com').then(function(response) {
-	// });
+		for (var i in $scope.markers) {
+			var id = $scope.markers[i].message;
+
+			if (library.name == id) {
+				($scope.markers[i])['focus'] = true;
+			}
+		}
+		
+		angular.extend($scope, {
+			center: {
+				lat: library.lat,
+				lng: library.lng,
+				zoom: 14
+			}
+		});
+
+	};
+
 };
 

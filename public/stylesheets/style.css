@@ -8,6 +8,10 @@ a {
 }
 
 .leaflet {
-	width: 400px;
-	height: 300px;
+	float: left;
+}
+
+.container ul {
+	float: left;
+	width: 350px;
 }
