@@ -7,10 +7,14 @@ function LibraryListController($scope, $http) {
 		$scope.libraries = libraries;
 
 		angular.forEach($scope.libraries, function(lib) {
+			var contacts = lib.hasOwnProperty('contacts') ? lib.contacts : '';
+			var email =  (contacts).hasOwnProperty('email') ? lib.contacts.email : '';
+			var address = lib.address + '<br>'+lib.city+', New York ' + lib.zipcode + '<br>' + email;
     	$scope.markers.push({
     		lat: +lib.lat,
     		lng: +lib.lng,
-    		message: lib.name
+    		id: lib.name,
+    		message: lib.name + '<p>' + address + '</p>'
     	});
     });
 	};
@@ -29,13 +33,13 @@ function LibraryListController($scope, $http) {
 	$scope.gotoLibrary = function (library) {
 
 		for (var i in $scope.markers) {
-			var id = $scope.markers[i].message;
+			var id = $scope.markers[i].id;
 
 			if (library.name == id) {
 				($scope.markers[i])['focus'] = true;
 			}
 		}
-		
+
 		angular.extend($scope, {
 			center: {
 				lat: library.lat,
