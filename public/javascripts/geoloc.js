@@ -5,7 +5,7 @@ if (navigator.geolocation) {
 }
 
 function posSuccess(pos) {
-	console.log('success ' + pos);
+	//console.log('success ' + pos);
 }
 
 function posError(error) {

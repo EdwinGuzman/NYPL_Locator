@@ -1,7 +1,24 @@
-function LibraryListController($scope, $http) {
+function LibraryListController($scope, $http, $window) {
 	$scope.libraries = [];
 	$scope.newLibrary = {}
 	$scope.markers = new Array();
+	$scope.supportsGeo = $window.navigator;
+
+	$scope.geolocator = function() {
+		window.navigator.geolocation.getCurrentPosition(function(pos) {
+			$scope.$apply(function() {
+				$scope.pos = pos;
+				console.log($scope.pos);
+				$scope.markers.push({
+		  		lat: pos.coords.latitude,
+		  		lng: pos.coords.longitude,
+		  		message: '<p>Your location</p>'
+		  	});
+			});
+		}, function(err) {
+			alert(err);
+		});
+	};
 
 	$scope.setLibraries = function (libraries) {
 		$scope.libraries = libraries;
@@ -17,6 +34,8 @@ function LibraryListController($scope, $http) {
     		message: lib.name + '<p>' + address + '</p>'
     	});
     });
+
+    $scope.geolocator();
 	};
 
 	angular.extend($scope, {
