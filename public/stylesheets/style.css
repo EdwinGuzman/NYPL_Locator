@@ -9,9 +9,24 @@ a {
 
 .leaflet {
 	float: left;
+	margin-right: 10px;
 }
 
 .container ul {
 	float: left;
-	width: 350px;
+	/*width: 300px;*/
+}
+
+.branches {
+	width: 200px;
+}
+
+.librariesContainer {
+	height: 300px;
+	width: 300px;
+	overflow: auto;
+}
+
+.filter_distance {
+	margin: 30px;
 }

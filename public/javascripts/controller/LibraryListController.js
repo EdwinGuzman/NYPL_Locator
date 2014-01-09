@@ -3,9 +3,45 @@ function LibraryListController($scope, $http, $window) {
 	$scope.newLibrary = {}
 	$scope.markers = new Array();
 	$scope.supportsGeo = $window.navigator;
+	$scope.userLocation = {};
+
+	$scope.submitDistance = function() {
+		for (var i=$scope.markers.length;i>=0;i--){
+			$scope.markers.pop();
+		}
+
+		$scope.markers.push({
+    		lat: $scope.userLocation.lat,
+    		lng: $scope.userLocation.lng,
+    });
+
+		$scope.filteredLibraries= [];
+
+		for (var i=0, len = $scope.libraries.length; i < len; i++) {
+			if (distance($scope.userLocation.lat, $scope.userLocation.lng, $scope.libraries[i].lat, $scope.libraries[i].lng) <= $scope.miles){
+				$scope.filteredLibraries.push($scope.libraries[i]);
+			}
+		}
+
+		angular.forEach($scope.filteredLibraries, function(lib) {
+			var contacts = lib.hasOwnProperty('contacts') ? lib.contacts : '';
+			var email =  (contacts).hasOwnProperty('email') ? lib.contacts.email : '';
+			var address = lib.address + '<br>'+lib.city+', New York ' + lib.zipcode + '<br>' + email;
+    	$scope.markers.push({
+    		lat: +lib.lat,
+    		lng: +lib.lng,
+    		id: lib.name,
+    		message: lib.name + '<p>' + address + '</p>'
+    	});
+    });
+
+	};
 
 	$scope.geolocator = function() {
 		window.navigator.geolocation.getCurrentPosition(function(pos) {
+			$scope.userLocation.lat = pos.coords.latitude;
+			$scope.userLocation.lng = pos.coords.longitude;
+
 			$scope.$apply(function() {
 				$scope.pos = pos;
 				console.log($scope.pos);
@@ -14,9 +50,22 @@ function LibraryListController($scope, $http, $window) {
 		  		lng: pos.coords.longitude,
 		  		message: '<p>Your location</p>'
 		  	});
+
+		  	angular.extend($scope, {
+					center: {
+						lat: pos.coords.latitude,
+						lng: pos.coords.longitude,
+						zoom: 15,
+					},
+					defaults: {
+						scrollWheelZoom: false
+					}
+				});
+
+
 			});
 		}, function(err) {
-			alert(err);
+			// alert(err);
 		});
 	};
 
@@ -71,3 +120,20 @@ function LibraryListController($scope, $http, $window) {
 
 };
 
+function distance(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}

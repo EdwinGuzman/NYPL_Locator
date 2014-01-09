@@ -13,8 +13,15 @@ block content
 		div.container
 			leaflet.leaflet(markers='markers',center='center',height='480px',width='640px')
 
-			div Search:
+			div.aside Search:
 				input(ng-model='searchLibrary')
-			ul
-				li.row.todo.not-done(ng-repeat='library in libraries | filter:searchLibrary') 
-					a(href='#',ng-click='gotoLibrary(library)') {{library.name}}
+
+			div.librariesContainer.aside
+				ul
+					li.row.grow.branches(ng-repeat='library in libraries | filter:searchLibrary') 
+						a(href='#',ng-click='gotoLibrary(library)') {{library.name}}
+
+			div.filter_distance
+				form(ng-submit="submitDistance()")
+					input(type='text', id='miles', placeholder='Miles',ng-model='miles')
+					button(type='submit') Filter
