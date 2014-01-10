@@ -12,6 +12,12 @@ function LibraryListController($scope, $http, $window) {
 	});
 
 	var redIcon = new RedIcon();
+  $scope.userLocationObj = {
+    lat: 0,
+    lng: 0,
+    id: 'userLocation',
+    icon: redIcon
+  };
 
 	$scope.removeMarkers = function () {
 		for (var i=0, len = $scope.markers.length; i < len; i++){
@@ -55,6 +61,7 @@ function LibraryListController($scope, $http, $window) {
 				$scope.userLocationObj = {
 		  		lat: pos.coords.latitude,
 		  		lng: pos.coords.longitude,
+          id: 'userLocation',
 		  		message: '<p>Your location</p>',
 		  		icon: redIcon
 		  	};
