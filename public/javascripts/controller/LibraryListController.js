@@ -4,17 +4,25 @@ function LibraryListController($scope, $http, $window) {
 	$scope.markers = new Array();
 	$scope.supportsGeo = $window.navigator;
 	$scope.userLocation = {};
+	$scope.showFilter = false;
+	var RedIcon = L.Icon.Default.extend({
+		options: {
+			iconUrl: 'images/marker-icon-red.png'
+		}
+	});
 
-	$scope.submitDistance = function() {
-		for (var i=$scope.markers.length;i>=0;i--){
+	var redIcon = new RedIcon();
+
+	$scope.removeMarkers = function () {
+		for (var i=0, len = $scope.markers.length; i < len; i++){
 			$scope.markers.pop();
 		}
+	};
 
-		$scope.markers.push({
-    		lat: $scope.userLocation.lat,
-    		lng: $scope.userLocation.lng,
-    });
+	$scope.submitDistance = function () {
+		$scope.removeMarkers();
 
+		$scope.markers.push($scope.userLocationObj);
 		$scope.filteredLibraries= [];
 
 		for (var i=0, len = $scope.libraries.length; i < len; i++) {
@@ -44,12 +52,14 @@ function LibraryListController($scope, $http, $window) {
 
 			$scope.$apply(function() {
 				$scope.pos = pos;
-				console.log($scope.pos);
-				$scope.markers.push({
+				$scope.userLocationObj = {
 		  		lat: pos.coords.latitude,
 		  		lng: pos.coords.longitude,
-		  		message: '<p>Your location</p>'
-		  	});
+		  		message: '<p>Your location</p>',
+		  		icon: redIcon
+		  	};
+
+				$scope.showFilter = true;
 
 		  	angular.extend($scope, {
 					center: {
@@ -62,11 +72,33 @@ function LibraryListController($scope, $http, $window) {
 					}
 				});
 
+				$scope.removeMarkers();
+				$scope.markers.push($scope.userLocationObj);
+
+				for (var i=0, len = $scope.libraries.length; i < len; i++) {
+					var lib = $scope.libraries[i];
+					var contacts = lib.hasOwnProperty('contacts') ? lib.contacts : '';
+					var email =  (contacts).hasOwnProperty('email') ? lib.contacts.email : '';
+					var address = lib.address + '<br>'+lib.city+', New York ' + lib.zipcode + '<br>' + email;
+					var marker = {
+			  		lat: +lib.lat,
+			  		lng: +lib.lng,
+			  		id: lib.name,
+			  		message: lib.name + '<p>' + address + '</p>',
+			  	};
+
+			  	if (distance($scope.userLocation.lat, $scope.userLocation.lng, $scope.libraries[i].lat, $scope.libraries[i].lng) <= 1) {
+			  		marker.icon = redIcon;
+					}
+
+			  	$scope.markers.push(marker);					
+				}
 
 			});
 		}, function(err) {
 			// alert(err);
 		});
+
 	};
 
 	$scope.setLibraries = function (libraries) {
@@ -99,12 +131,27 @@ function LibraryListController($scope, $http, $window) {
 	});
 
 	$scope.gotoLibrary = function (library) {
+		$scope.removeMarkers();
+		$scope.markers.push($scope.userLocationObj);
+
+		angular.forEach($scope.libraries, function(lib) {
+			var contacts = lib.hasOwnProperty('contacts') ? lib.contacts : '';
+			var email =  (contacts).hasOwnProperty('email') ? lib.contacts.email : '';
+			var address = lib.address + '<br>'+lib.city+', New York ' + lib.zipcode + '<br>' + email;
+    	$scope.markers.push({
+    		lat: +lib.lat,
+    		lng: +lib.lng,
+    		id: lib.name,
+    		message: lib.name + '<p>' + address + '</p>'
+    	});
+    });
 
 		for (var i in $scope.markers) {
 			var id = $scope.markers[i].id;
 
 			if (library.name == id) {
 				($scope.markers[i])['focus'] = true;
+				($scope.markers[i])['icon'] = redIcon;
 			}
 		}
 

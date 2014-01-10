@@ -36,7 +36,7 @@ exports.index = function () {
 		});
 
 		res.render('index', {
-			title: 'Express',
+			title: 'NYPL Locator',
 			libraries: Library
 		});
   };

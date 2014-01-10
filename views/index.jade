@@ -11,17 +11,17 @@ block content
 		h1 NYPL Branch Locations
 
 		div.container
-			leaflet.leaflet(markers='markers',center='center',height='480px',width='640px')
+			leaflet.leaflet(markers='markers',center='center',height='480px',width='700px')
 
-			div.aside Search:
-				input(ng-model='searchLibrary')
+			div.sidebar
+				div Search:
+					input(ng-model='searchLibrary')
+				div.librariesContainer.aside
+					ul
+						li.row.grow.branches(ng-repeat='library in libraries | filter:searchLibrary') 
+							a(href='#',ng-click='gotoLibrary(library)') {{library.name}}
 
-			div.librariesContainer.aside
-				ul
-					li.row.grow.branches(ng-repeat='library in libraries | filter:searchLibrary') 
-						a(href='#',ng-click='gotoLibrary(library)') {{library.name}}
-
-			div.filter_distance
-				form(ng-submit="submitDistance()")
-					input(type='text', id='miles', placeholder='Miles',ng-model='miles')
-					button(type='submit') Filter
+				div.filter_distance(ng-show='showFilter')
+					form(ng-submit="submitDistance()")
+						input(type='text', id='miles', placeholder='Miles',ng-model='miles')
+						button(type='submit') Filter
