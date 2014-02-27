@@ -1,4 +1,11 @@
-function LibraryListController($scope, $http, $window) {
+function LibraryListController($scope, $http, $window, geolocation) {
+  geolocation.getLocation().then(function(data) {
+    $scope.testcoords = {lat: data.coords.latitude, long: data.coords.longitude};
+    console.log($scope.testcoords);
+    console.log($rootScope.$broadcast('error',CONSTANTS['errors.location.notFound']));
+    console.log(data);
+  });
+
 	$scope.libraries = [];
 	$scope.newLibrary = {}
 	$scope.markers = new Array();

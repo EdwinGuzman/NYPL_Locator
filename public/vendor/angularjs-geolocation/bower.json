@@ -1,0 +1,36 @@
+{
+  "name": "angularjs-geolocation",
+  "version": "0.1.1",
+  "homepage": "https://github.com/arunisrael/angularjs-geolocation",
+  "authors": [
+    "Arun Israel <arun.israel@gmail.com>"
+  ],
+  "description": "An angular.js wrapper around window.navigator.geolocation",
+  "main": "./src/geolocation.js",
+  "keywords": [
+    "geolocation",
+    "angular.js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.x"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.x"
+  },
+  "gitHead": "5e098c5296721b002d5ee0a6b1a2a36db6d1f036",
+  "readme": "AngularJS-Geolocation\n=========\n\nAn angular.js wrapper around window.navigator.geolocation\n\nBower\n--\nThis module is available as bower package, install it with this command:\n\n```bash\nbower install angularjs-geolocation\n```\nor\n\n```bash\nbower install git://github.com/arunisrael/angularjs-geolocation.git\n```\n\nUsage\n--\n- Add the geolocation module as dependency\n- Inject the geolocation service (yes, it has the same name)\n- Invoke the getLocation method on the geolocation service to retrieve a promise\n- The promise will be resolved with the position returned by window.navigator.getCurrentPosition if the user allows the browser to access their location\n- The promise will be rejected if the user rejects location access or the browser does not support it\n\nExample\n--\n```\nangular.module('barterApp',['geolocation'])\n  .controller('geoCtrl', function ($scope,geolocation) {\n    geolocation.getLocation().then(function(data){\n      $scope.coords = {lat:data.coords.latitude, long:data.coords.longitude};\n    });\n});\n```\n\nDemo\n--\nSee this [plunker](http://embed.plnkr.co/TM71LBh6ttYotOo6t7oX/preview) that displays your latitude/longitude\n\nError Handling\n--\nThe geolocation module defines a geolocation-msgs constant holding error msgs that are broadcast if the user rejects location access:\n```\n$rootScope.$broadcast('error',CONSTANTS['errors.location.notFound']);\n```\n\nor if the browser does not support geolocation:\n```\n$rootScope.$broadcast('error',geolocation_msgs['errors.location.unsupportedBrowser']);\n```\n\nTesting\n--\n```\ngrunt test\n```\n\nLicense\n--\nMIT\n",
+  "readmeFilename": "README.md",
+  "_id": "angularjs-geolocation@0.1.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arunisrael/angularjs-geolocation.git"
+  }
+}
