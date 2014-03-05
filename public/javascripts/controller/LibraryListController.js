@@ -2,8 +2,11 @@ function LibraryListController($scope, $http, $window, geolocation) {
   geolocation.getLocation().then(function(data) {
     $scope.testcoords = {lat: data.coords.latitude, long: data.coords.longitude};
     console.log($scope.testcoords);
-    console.log($rootScope.$broadcast('error',CONSTANTS['errors.location.notFound']));
     console.log(data);
+  }, function(err) {
+    console.log (err);
+  }, function (progress) {
+    //
   });
 
 	$scope.libraries = [];
