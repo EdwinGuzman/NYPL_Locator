@@ -30,9 +30,9 @@ function LibraryListController($scope, $http, $window, geolocation) {
   };
 
 	$scope.removeMarkers = function () {
-		for (var i=0, len = $scope.markers.length; i < len; i++){
-			$scope.markers.pop();
-		}
+    _($scope.markers.length).times(function () {
+      $scope.markers.pop();
+    });
 	};
 
 	$scope.submitDistance = function () {
@@ -41,13 +41,13 @@ function LibraryListController($scope, $http, $window, geolocation) {
 		$scope.markers.push($scope.userLocationObj);
 		$scope.filteredLibraries= [];
 
-		for (var i=0, len = $scope.libraries.length; i < len; i++) {
-			if (distance($scope.userLocation.lat, $scope.userLocation.lng, $scope.libraries[i].lat, $scope.libraries[i].lng) <= $scope.miles){
-				$scope.filteredLibraries.push($scope.libraries[i]);
-			}
-		}
+    $scope.filteredLibraries =_.select($scope.libraries, function (library) {
+      if (distance($scope.userLocation.lat, $scope.userLocation.lng, library.lat, library.lng) <= $scope.miles) {
+        return library;
+      }
+    });
 
-		angular.forEach($scope.filteredLibraries, function(lib) {
+		_.forEach($scope.filteredLibraries, function(lib) {
 			var contacts = lib.hasOwnProperty('contacts') ? lib.contacts : '';
 			var email =  (contacts).hasOwnProperty('email') ? lib.contacts.email : '';
 			var address = lib.address + '<br>'+lib.city+', New York ' + lib.zipcode + '<br>' + email;
@@ -121,7 +121,7 @@ function LibraryListController($scope, $http, $window, geolocation) {
 	$scope.setLibraries = function (libraries) {
 		$scope.libraries = libraries;
 
-		angular.forEach($scope.libraries, function(lib) {
+		_.forEach($scope.libraries, function(lib) {
 			var contacts = lib.hasOwnProperty('contacts') ? lib.contacts : '';
 			var email =  (contacts).hasOwnProperty('email') ? lib.contacts.email : '';
 			var address = lib.address + '<br>'+lib.city+', New York ' + lib.zipcode + '<br>' + email;
@@ -147,11 +147,11 @@ function LibraryListController($scope, $http, $window, geolocation) {
 		}
 	});
 
-	$scope.gotoLibrary = function (library) {
+	$scope.gotoLibrary = function (library, _) {
 		$scope.removeMarkers();
 		$scope.markers.push($scope.userLocationObj);
 
-		angular.forEach($scope.libraries, function(lib) {
+		_.forEach($scope.libraries, function(lib) {
 			var contacts = lib.hasOwnProperty('contacts') ? lib.contacts : '';
 			var email =  (contacts).hasOwnProperty('email') ? lib.contacts.email : '';
 			var address = lib.address + '<br>'+lib.city+', New York ' + lib.zipcode + '<br>' + email;
